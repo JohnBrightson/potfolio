@@ -1,215 +1,169 @@
-/* =========================
-   GAME DEVELOPER PORTFOLIO UI
-   ========================= */
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800&family=Poppins&display=swap');
 
-/* RESET */
+:root {
+    --neon: #00cfc8;
+    --neon-soft: rgba(0, 207, 200, 0.35);
+    --bg-main: #05070a;
+    --bg-card: rgba(10, 14, 18, 0.9);
+    --text-main: #d9d9d9;
+    --text-muted: #9aa0a6;
+}
+
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-/* GLOBAL */
+html {
+    scroll-behavior: smooth;
+}
+
 body {
-  font-family: 'Orbitron', 'Roboto', sans-serif;
-  background: radial-gradient(circle at top, #0f2027, #000);
-  color: #eaeaea;
-  line-height: 1.6;
-  overflow-x: hidden;
+    background: radial-gradient(circle at top, #0b1c1e, #05070a 70%);
+    color: var(--text-main);
+    font-family: 'Poppins', sans-serif;
 }
 
-/* SCANLINES EFFECT */
-body::after {
-  content: "";
-  position: fixed;
-  inset: 0;
-  background: repeating-linear-gradient(
-    to bottom,
-    rgba(255,255,255,0.03) 0px,
-    rgba(255,255,255,0.03) 1px,
-    transparent 2px,
-    transparent 4px
-  );
-  pointer-events: none;
-  z-index: 999;
+/* ===== Header ===== */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 40px 8%;
+    border-bottom: 1px solid var(--neon-soft);
 }
 
-/* LINKS */
-a {
-  text-decoration: none;
-  color: #00d8ff;
+.profile-pic img {
+    width: 130px;
+    border-radius: 50%;
+    border: 3px solid var(--neon);
+    box-shadow: 0 0 12px var(--neon-soft);
 }
 
+.intro h1 {
+    font-family: 'Orbitron', sans-serif;
+    color: var(--neon);
+    font-size: 2.3rem;
+}
+
+.intro h4 {
+    color: var(--text-muted);
+}
+
+/* ===== Button ===== */
+.buttons a {
+    background: linear-gradient(135deg, #00cfc8, #008b86);
+    color: #000;
+    padding: 12px 24px;
+    border-radius: 30px;
+    font-weight: 600;
+    text-decoration: none;
+    box-shadow: 0 0 10px var(--neon-soft);
+}
+
+/* ===== Sections ===== */
 section {
-  padding: 60px 20px;
-  max-width: 1200px;
-  margin: 0 auto 50px;
-}
-
-/* HEADINGS */
-h1 {
-  font-size: 3rem;
-  text-transform: uppercase;
-  letter-spacing: 3px;
+    padding: 60px 10%;
 }
 
 h2 {
-  font-size: 2rem;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  color: #9f7aea;
-  border-bottom: 2px solid #9f7aea;
-  display: inline-block;
-  padding-bottom: 8px;
-  margin-bottom: 30px;
+    font-family: 'Orbitron', sans-serif;
+    color: var(--neon);
+    margin-bottom: 25px;
 }
 
-/* HERO / HEADER */
-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 40px;
-  padding: 70px 40px;
-  background: linear-gradient(145deg, #050510, #0c0c1c);
-  border-radius: 20px;
-  box-shadow: 0 0 40px rgba(127, 0, 255, 0.25);
-  flex-wrap: wrap;
+/* ===== Cards ===== */
+.bubble {
+    background: var(--bg-card);
+    padding: 25px;
+    border-radius: 14px;
+    border: 1px solid rgba(0, 207, 200, 0.2);
 }
 
-header img {
-  width: 220px;
-  height: 260px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 3px solid #00d8ff;
-  box-shadow: 0 0 25px rgba(0, 216, 255, 0.6);
+/* ===== Skills ===== */
+.skills ul {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 15px;
 }
 
-.intro {
-  flex: 1;
-  min-width: 250px;
+.skills li {
+    background: linear-gradient(135deg, #0e1f22, #0a1418);
+    color: var(--neon);
+    padding: 12px;
+    border-radius: 20px;
+    text-align: center;
+    font-weight: 600;
+    border: 1px solid var(--neon-soft);
 }
 
-/* PRESS START BUTTONS */
-.buttons {
-  display: flex;
-  gap: 15px;
+/* ===== Projects ===== */
+.project-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 30px;
 }
 
-.buttons a {
-  padding: 14px 28px;
-  background: linear-gradient(135deg, #00d8ff, #7f00ff);
-  color: #000;
-  font-weight: bold;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  border-radius: 30px;
-  box-shadow: 0 0 25px rgba(0, 216, 255, 0.7);
-  transition: 0.3s ease;
+.project-card {
+    display: block;
+    padding: 30px;
+    background: var(--bg-card);
+    border-radius: 18px;
+    border: 1px solid rgba(0, 207, 200, 0.25);
+    text-decoration: none;
+    color: var(--text-main);
+    transition: transform 0.35s ease, box-shadow 0.35s ease;
 }
 
-.buttons a:hover {
-  color: #fff;
-  box-shadow: 0 0 40px rgba(127, 0, 255, 0.9);
-  transform: translateY(-3px);
+.project-card:hover {
+    transform: scale(1.08);
+    box-shadow: 0 0 30px rgba(0, 207, 200, 0.35);
+    z-index: 10;
 }
 
-/* CARD SECTIONS */
-.about, .skills, .projects, .services, .contact {
-  background: rgba(15, 15, 30, 0.95);
-  border-radius: 20px;
-  padding: 40px 35px;
-  border: 1px solid rgba(138, 43, 226, 0.3);
-  box-shadow: 0 0 35px rgba(138, 43, 226, 0.15);
+.project-card h3 {
+    font-family: 'Orbitron', sans-serif;
+    color: var(--neon);
+    margin-bottom: 10px;
 }
 
-/* SKILLS */
-.skills-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 15px;
+.project-card p {
+    color: var(--text-muted);
 }
 
-.skills-list div {
-  background: linear-gradient(145deg, #0c0c1c, #151530);
-  padding: 12px 18px;
-  border-radius: 10px;
-  border: 1px solid rgba(0, 216, 255, 0.3);
-  color: #00d8ff;
-  box-shadow: 0 0 15px rgba(0, 216, 255, 0.3);
+/* ===== Contact ===== */
+.contact-icons {
+    display: flex;
+    gap: 25px;
+    align-items: center;
 }
 
-/* PROJECTS = GAME CARDS */
-.project-list ol {
-  list-style: none;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 25px;
-  margin-top: 30px;
+.contact-icons img {
+    width: 36px;
+    filter: drop-shadow(0 0 6px var(--neon-soft));
+    transition: transform 0.3s;
 }
 
-.project-list li {
-  position: relative;
-  background: linear-gradient(145deg, #0c0c1c, #151530);
-  padding: 28px;
-  border-radius: 20px;
-  border: 1px solid rgba(0, 216, 255, 0.25);
-  box-shadow: 0 10px 30px rgba(0,0,0,0.6);
-  transition: 0.35s ease;
+.contact-icons img:hover {
+    transform: scale(1.2);
 }
 
-/* GLOW + GLITCH HOVER */
-.project-list li:hover {
-  transform: translateY(-10px) scale(1.03);
-  box-shadow: 0 0 40px rgba(0, 216, 255, 0.6);
+.mail-btn {
+    background: linear-gradient(135deg, #00cfc8, #008b86);
+    color: #000;
+    padding: 10px 22px;
+    border-radius: 25px;
+    font-weight: 600;
+    text-decoration: none;
+    box-shadow: 0 0 10px var(--neon-soft);
 }
 
-.project-list li::before {
-  content: "▶";
-  color: #00d8ff;
-  margin-right: 8px;
-}
-
-/* TECHNOLOGY TEXT */
-.project-list li br + strong,
-.project-list li strong {
-  color: #9f7aea;
-}
-
-/* CONTACT BUTTONS */
-.contact-buttons {
-  display: flex;
-  gap: 15px;
-  flex-wrap: wrap;
-}
-
-.contact-buttons a {
-  padding: 14px 28px;
-  border-radius: 30px;
-  background: rgba(0, 216, 255, 0.15);
-  color: #00d8ff;
-  border: 1px solid rgba(0, 216, 255, 0.4);
-  transition: 0.3s ease;
-}
-
-.contact-buttons a:hover {
-  background: rgba(127, 0, 255, 0.3);
-  box-shadow: 0 0 30px rgba(127, 0, 255, 0.8);
-}
-
-/* FOOTER */
+/* ===== Footer ===== */
 footer {
-  text-align: center;
-  padding: 25px;
-  background: #05050f;
-  color: #888;
-  letter-spacing: 1px;
-}
-
-/* RESPONSIVE */
-@media (max-width: 768px) {
-  h1 { font-size: 2.2rem; }
-  h2 { font-size: 1.5rem; }
-  header { padding: 50px 25px; }
+    text-align: center;
+    padding: 20px;
+    border-top: 1px solid rgba(0, 207, 200, 0.2);
+    color: var(--text-muted);
 }
