@@ -4,160 +4,640 @@
 <meta charset="UTF-8">
 <title>John Brightson | Game Developer Portfolio</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Theme variables */
+        :root{
+            --bg:#0b1120;
+            --card:#111827;
+            --muted:#9ca3af;
+            --text:#e5e7eb;
+            --accent:#3b82f6;
+            --skill-bg:#1f2937;
+        }
+        [data-theme="light"]{
+            --bg:#e8f1ff;
+            --card:#ffffff;
+            --muted:#4b5563;
+            --text:#0b0f1a;
+            --accent:#2563eb;
+            --skill-bg:#dde9f8;
+        }
+        
+        /* Base styles */
+        html,body{height:100%; padding-top:60px; margin:0; font-family:Arial, Helvetica, sans-serif;}
+        body{background:var(--bg); color:var(--text); transition:background 1s ease, color 1s ease; overflow-x:hidden;}
+        
+        /* Navbar */
+        nav {
+            position:fixed; top:0; left:0; right:0; background:var(--bg); backdrop-filter:blur(10px);
+            border-bottom:1px solid rgba(255,255,255,0.06); z-index:100; padding:12px 16px;
+        }
+        nav ul {
+            list-style:none; margin:0; padding:0; display:flex; gap:20px; align-items:center;
+            max-width:1000px; margin:auto;
+        }
+        nav a {
+            color:var(--text); text-decoration:none; font-size:14px; transition:color .18s ease;
+        }
+        nav a:hover { color:var(--accent); }
+        
+        /* Theme toggle in navbar */
+        .theme-toggle-nav {
+            background:transparent; border:0; color:var(--text); cursor:pointer;
+            font-size:18px; transition:color .18s ease, transform .18s ease; padding:4px 8px;
+        }
+        .theme-toggle-nav:hover { color:var(--accent); transform:scale(1.2); }
+        
+        #main-container{max-width:1000px; margin:auto; padding:30px 16px;}
+        
+        /* ===== SKILLS BRICK FORMAT ===== */
+        .skills-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            max-width: 800px;
+            margin: 25px auto 0;
+        }
+
+        .skill, .soft-skill {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: inherit;
+            padding: 10px 16px 10px 36px;
+            border-radius: 8px;
+            position: relative;
+            font-size: 14px;
+            background: var(--skill-bg);
+            min-width: 130px;
+            text-align: center;
+            transition: transform 0.5s ease, background 0.5s ease;
+            flex: 0 1 auto;
+            white-space: nowrap;
+        }
+
+        .skill:hover, .soft-skill:hover {
+            transform: translateY(-4px) scale(1.03);
+        }
+
+        .soft-skill {
+            background: var(--card);
+        }
+
+        /* Icon positioning */
+        .skill i, .soft-skill i {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #ffffff;
+            font-size: 18px;
+            width: 18px;
+            text-align: center;
+        }
+
+        [data-theme="light"] .skill i,
+        [data-theme="light"] .soft-skill i {
+            color: #000000;
+        }
+
+        /* Remove pseudo-element icons */
+        .skill::before, .soft-skill::before {
+            display: none;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .skill, .soft-skill {
+                min-width: 120px;
+                white-space: normal;
+                text-align: left;
+                padding-left: 36px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .skill, .soft-skill {
+                width: 100%;
+                white-space: normal;
+            }
+        }
+
+        /* Custom tooltip */
+        .skill[data-tip]:hover::after, .soft-skill[data-tip]:hover::after {
+            content: attr(data-tip);
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            bottom: calc(100% + 10px);
+            background: var(--card);
+            color: var(--muted);
+            padding: 6px 10px;
+            border-radius: 6px;
+            font-size: 13px;
+            white-space: nowrap;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.45);
+            z-index: 80;
+        }
+        
+        /* Project cards */
+        .project-card {
+            background: var(--card);
+            padding: 22px;
+            border-radius: 14px;
+            margin-top: 20px;
+            transition: transform 0.8s ease, box-shadow 0.8s ease, opacity 0.8s ease;
+            cursor: pointer;
+            transform-origin: center;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        .project-card:hover {
+            transform: translateY(-6px) scale(1.01);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+        }
+        
+        .project-card h3 {
+            margin-top: 0;
+            margin-bottom: 12px;
+            color: var(--accent);
+        }
+
+        /* Projects grid */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            align-items: stretch;
+        }
+        
+        @media (max-width: 980px) {
+            .projects-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 640px) {
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Project card content */
+        .project-card .desc {
+            display: block;
+            color: var(--muted);
+            line-height: 1.6;
+            margin: 10px 0;
+            font-size: 14px;
+        }
+        
+        .project-card .meta {
+            color: var(--muted);
+            margin: 8px 0 2px 0;
+            font-size: 13px;
+            font-style: italic;
+        }
+        
+        .project-card a {
+            display: inline-block;
+            margin-top: 4px;
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 500;
+            align-self: flex-start;
+            transition: transform 0.2s ease;
+        }
+        
+        .project-card a:hover {
+            transform: translateX(5px);
+        }
+
+        .hidden-project {
+            display: none;
+        }
+
+        /* ===== DROPDOWN TRANSITION FOR SECTIONS ===== */
+        /* Initial state - hidden and slightly above */
+        .section-reveal {
+            opacity: 0;
+            transform: translateY(-40px);
+            transition: opacity 1s cubic-bezier(0.4, 0, 0.2, 1), 
+                        transform 1s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Active state - visible and in original position */
+        .section-reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Apply to all major sections */
+        #hero,
+        #skills,
+        .soft-skills-section,
+        #projects,
+        #contact-section {
+            transition: opacity 1s cubic-bezier(0.4, 0, 0.2, 1), 
+                        transform 1s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Tilt effect */
+        .tilt {
+            perspective: 800px;
+        }
+
+        /* Floating title animation */
+        @keyframes floaty {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+            100% { transform: translateY(0); }
+        }
+        
+        h1 {
+            animation: floaty 6s ease-in-out infinite;
+        }
+
+        /* Show more button */
+        #projects-toggle {
+            background: transparent;
+            color: var(--accent);
+            border: 2px solid var(--accent);
+            padding: 8px 20px;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.8s ease;
+            font-weight: 600;
+            font-size: 14px;
+            letter-spacing: 0.5px;
+        }
+
+        #projects-toggle:hover {
+            background: var(--accent);
+            color: var(--bg);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3);
+        }
+
+        [data-theme="light"] #projects-toggle:hover {
+            color: #ffffff;
+        }
+
+        .button-container {
+            text-align: center;
+            margin-top: 80px;
+            margin-bottom: 20px;
+        }
+
+        #projects {
+            padding-bottom: 40px;
+        }
+
+        /* Contact button hover effects */
+        #contact a[href*="github"], 
+        #contact a[href*="linkedin"], 
+        #contact a[href*="mailto"] {
+            transition: all 0.8s ease;
+        }
+
+        #contact a[href*="github"]:hover,
+        #contact a[href*="linkedin"]:hover,
+        #contact a[href*="mailto"]:hover {
+            background: var(--accent) !important;
+            color: var(--bg) !important;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3);
+        }
+
+        [data-theme="light"] #contact a[href*="github"]:hover,
+        [data-theme="light"] #contact a[href*="linkedin"]:hover,
+        [data-theme="light"] #contact a[href*="mailto"]:hover {
+            color: #ffffff !important;
+        }
+
+        /* Scroll behavior */
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
 </head>
 
-<body style="margin:0; font-family:Arial, Helvetica, sans-serif; background:#0b1120; color:#e5e7eb;">
+<body>
+    <!-- Navigation Bar -->
+    <nav>
+        <ul>
+            <li><a href="#hero">Home</a></li>
+            <li><a href="#skills">Skills</a></li>
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#contact-section">Contact</a></li>
+            <li style="margin-left:auto;"><button id="theme-toggle" class="theme-toggle-nav" title="Toggle theme"><i class="fas fa-moon"></i></button></li>
+        </ul>
+    </nav>
 
-<div style="max-width:1000px; margin:auto; padding:50px 20px;">
+    <!-- Background canvas -->
+    <canvas id="bg-canvas" style="position:fixed; inset:0; z-index:0; pointer-events:none;"></canvas>
 
-<!-- HEADER -->
-<div style="display:flex; flex-wrap:wrap; align-items:center; gap:30px; margin-bottom:70px;">
-    <img src="profile.jpeg" alt="Profile Photo" width="160" style="border-radius:16px; border:3px solid #3b82f6;">
-    <div>
-        <h1 style="margin:0; font-size:40px;">
-            John <span style="color:#3b82f6;">Brightson</span>
-        </h1>
+    <div id="main-container">
+        <!-- HERO SECTION -->
+        <section id="hero" class="section-reveal">
+            <div style="text-align:center; margin-bottom:40px;">
+                <img src="profile.jpeg" alt="Profile Photo" width="200" style="width:200px; height:200px; border-radius:50%; border:3px solid var(--accent); object-fit:cover; margin:0 auto 24px; display:block;">
+                <h1 style="margin:0 0 12px; font-size:40px;">
+                    John <span style="color:var(--accent);">Brightson N</span>
+                </h1>
 
-        <p style="margin-top:12px; color:#9ca3af; max-width:600px; line-height:1.6;">
-            B.Tech IT @ Knowledge Institute of Technology, Salem (2024–2028).  
-            Passionate about building immersive games, realistic 3D models, and interactive experiences.
-        </p>
+                <!-- About section -->
+                <p style="margin:16px auto 20px; color:var(--muted); max-width:700px; line-height:1.6;">
+                    Passionate about building immersive games, realistic 3D models, and interactive experiences. With expertise in Unity development, 3D modeling with Blender, and modern programming languages, I create engaging digital solutions.
+                </p>
 
-        <!-- CONTACT BUTTON -->
-        <a href="#contact"
-           style="display:inline-block; margin-top:18px; padding:10px 18px; background:#3b82f6; color:#ffffff; text-decoration:none; border-radius:8px;">
-           Contact
-        </a>
-    </div>
-</div>
+                <!-- Education -->
+                <div style="margin:20px auto; max-width:700px; color:var(--muted); font-size:14px;">
+                    <p style="margin:8px 0;"><strong>Education:</strong> B.Tech in Information Technology</p>
+                    <p style="margin:8px 0;"><strong>Institution:</strong> Knowledge Institute of Technology, Salem</p>
+                    <p style="margin:8px 0;"><strong>Duration:</strong> 2024–2028</p>
+                </div>
+            </div>
+        </section>
 
-<!-- TECHNICAL SKILLS -->
-<div style="margin-bottom:60px;">
-    <h2 style="font-size:24px; border-left:4px solid #3b82f6; padding-left:12px;">Technical Skills</h2>
-    <div style="margin-top:25px;">
-        <span style="display:inline-block; background:#1f2937; padding:10px 16px; margin:6px; border-radius:8px;">Unity</span>
-        <span style="display:inline-block; background:#1f2937; padding:10px 16px; margin:6px; border-radius:8px;">C#</span>
-        <span style="display:inline-block; background:#1f2937; padding:10px 16px; margin:6px; border-radius:8px;">C++</span>
-        <span style="display:inline-block; background:#1f2937; padding:10px 16px; margin:6px; border-radius:8px;">C</span>
-        <span style="display:inline-block; background:#1f2937; padding:10px 16px; margin:6px; border-radius:8px;">Python</span>
-        <span style="display:inline-block; background:#1f2937; padding:10px 16px; margin:6px; border-radius:8px;">Blender</span>
-        <span style="display:inline-block; background:#1f2937; padding:10px 16px; margin:6px; border-radius:8px;">Git & GitHub</span>
-    </div>
-</div>
-
-<!-- SOFT SKILLS -->
-<div style="margin-bottom:60px;">
-    <h2 style="font-size:24px; border-left:4px solid #3b82f6; padding-left:12px;">Soft Skills</h2>
-    <div style="margin-top:25px;">
-        <span style="display:inline-block; background:#111827; padding:10px 16px; margin:6px; border-radius:8px;">Teamwork</span>
-        <span style="display:inline-block; background:#111827; padding:10px 16px; margin:6px; border-radius:8px;">Leadership</span>
-        <span style="display:inline-block; background:#111827; padding:10px 16px; margin:6px; border-radius:8px;">Creativity</span>
-        <span style="display:inline-block; background:#111827; padding:10px 16px; margin:6px; border-radius:8px;">Time Management</span>
-        <span style="display:inline-block; background:#111827; padding:10px 16px; margin:6px; border-radius:8px;">Overcoming Challenges</span>
-    </div>
-</div>
-
-<!-- PROJECTS -->
-<div style="margin-bottom:60px;">
-    <h2 style="font-size:24px; border-left:4px solid #3b82f6; padding-left:12px;">Projects</h2>
-
-    <div style="background:#111827; padding:25px; border-radius:14px; margin-top:25px;">
-        <h3>AR Project</h3>
-        <p style="color:#9ca3af; line-height:1.6;">
-            Augmented Reality application developed using Unity and Vuforia Engine,
-            featuring image target detection and interactive AR content.
-        </p>
-        <p style="color:#9ca3af;">Tools: Unity, C#, Vuforia</p>
-        <a href="https://github.com/JohnBrightson/AR-Project" target="_blank" style="color:#3b82f6; text-decoration:none;">
-            View on GitHub →
-        </a>
-    </div>
-
-    <div style="background:#111827; padding:25px; border-radius:14px; margin-top:20px;">
-        <h3>Basic VR Simulation</h3>
-        <p style="color:#9ca3af; line-height:1.6;">
-            Virtual Reality simulation focused on basic interaction
-            and immersive environment setup.
-        </p>
-        <p style="color:#9ca3af;">Tools: Unity, C#</p>
-        <a href="https://github.com/JohnBrightson/Basic-VR-Simulation" target="_blank" style="color:#3b82f6; text-decoration:none;">
-            View on GitHub →
-        </a>
-    </div>
-
-    <div style="background:#111827; padding:25px; border-radius:14px; margin-top:20px;">
-        <h3>Low-Poly 3D Models</h3>
-        <p style="color:#9ca3af; line-height:1.6;">
-            Collection of optimized low-poly 3D models created for real-time games.
-        </p>
-        <p style="color:#9ca3af;">Tools: Blender</p>
-        <a href="https://github.com/JohnBrightson/Low-Poly-3D-models" target="_blank" style="color:#3b82f6; text-decoration:none;">
-            View on GitHub →
-        </a>
-    </div>
-
-    <div style="background:#111827; padding:25px; border-radius:14px; margin-top:20px;">
-        <h3>2.5D Endless Runner</h3>
-        <p style="color:#9ca3af; line-height:1.6;">
-            2.5D endless runner game with continuous level generation,
-            player movement, and obstacle handling.
-        </p>
-        <p style="color:#9ca3af;">Tools: Unity, C#</p>
-        <a href="https://github.com/JohnBrightson/2.5D_Endless_Runner" target="_blank" style="color:#3b82f6; text-decoration:none;">
-            View on GitHub →
-        </a>
-    </div>
-</div>
-
-<!-- CONTACT -->
-<div id="contact" style="margin-top:80px;">
-    <h2 style="font-size:24px; border-left:4px solid #3b82f6; padding-left:12px;">Contact</h2>
-
-    <div style="background:#111827; padding:25px; border-radius:14px; margin-top:25px; line-height:1.8;">
-
-        <div style="margin-bottom:20px;">
-            <a href="https://www.linkedin.com/in/john-brightson-195380314" target="_blank">
-                <img src="Linkedin.png" width="36" style="margin-right:15px;">
-            </a>
-            <a href="https://github.com/JohnBrightson" target="_blank">
-                <img src="GitHub.png" width="36" style="margin-right:15px;">
-            </a>
-            <a href="mailto:johnbrightson0@gmail.com">
-                <img src="Mail.png" width="36">
-            </a>
+        <!-- TECHNICAL SKILLS - BRICK FORMAT 4,3,2 -->
+        <div id="skills" class="section-reveal" style="margin-bottom:60px;">
+            <h2 style="font-size:24px; border-left:4px solid var(--accent); padding-left:12px;">Technical Skills</h2>
+            <div class="skills-container">
+                <!-- Row 1: 4 skills -->
+                <span class="skill" data-tip="Unity engine, game development"><i class="fas fa-gamepad"></i> Unity Engine</span>
+                <span class="skill" data-tip="C# programming for Unity and tools"><i class="fas fa-code"></i> C# Programming</span>
+                <span class="skill" data-tip="C++ low-level systems and engines"><i class="fas fa-cogs"></i> C++ Programming</span>
+                <span class="skill" data-tip="C language fundamentals"><i class="fas fa-tools"></i> C Programming</span>
+                
+                <!-- Row 2: 3 skills -->
+                <span class="skill" data-tip="Python scripting and tools"><i class="fab fa-python"></i> Python Programming</span>
+                <span class="skill" data-tip="3D modelling and asset creation"><i class="fas fa-cubes"></i> Blender 3D</span>
+                <span class="skill" data-tip="Version control and GitHub workflows"><i class="fab fa-github"></i> Git & GitHub</span>
+                
+                <!-- Row 3: 2 skills -->
+                <span class="skill" data-tip="Game design and mechanics"><i class="fas fa-dice-d20"></i> Game Design</span>
+                <span class="skill" data-tip="VR/AR development"><i class="fas fa-vr-cardboard"></i> VR/AR Development</span>
+            </div>
         </div>
 
-        <p><strong>Email:</strong>
-            <a href="mailto:johnbrightson0@gmail.com" style="color:#3b82f6; text-decoration:none;">
-                johnbrightson0@gmail.com
-            </a>
-        </p>
+        <!-- SOFT SKILLS - BRICK FORMAT 3,3 -->
+        <div class="soft-skills-section section-reveal" style="margin-bottom:60px;">
+            <h2 style="font-size:24px; border-left:4px solid var(--accent); padding-left:12px;">Soft Skills</h2>
+            <div class="skills-container">
+                <!-- Row 1: 3 skills -->
+                <span class="soft-skill" data-tip="Communicates and coordinates well"><i class="fas fa-users"></i> Teamwork & Collaboration</span>
+                <span class="soft-skill" data-tip="Leads teams and projects"><i class="fas fa-user-tie"></i> Leadership</span>
+                <span class="soft-skill" data-tip="Idea generation and design thinking"><i class="fas fa-lightbulb"></i> Creative Thinking</span>
+                
+                <!-- Row 2: 3 skills -->
+                <span class="soft-skill" data-tip="Organizes time and priorities"><i class="fas fa-clock"></i> Time Management</span>
+                <span class="soft-skill" data-tip="Resilience and problem solving"><i class="fas fa-trophy"></i> Problem Solving</span>
+                <span class="soft-skill" data-tip="Clear and effective communication"><i class="fas fa-comments"></i> Communication</span>
+            </div>
+        </div>
 
-        <p><strong>Phone:</strong>
-            <a href="tel:8903155922" style="color:#3b82f6; text-decoration:none;">
-                8903155922
-            </a>
-        </p>
+        <!-- PROJECTS SECTION -->
+        <section id="projects" class="section-reveal" style="margin-bottom:60px;">
+            <h2 style="font-size:24px; border-left:4px solid var(--accent); padding-left:12px;">Projects</h2>
+            <div class="projects-grid" style="margin-top:25px;">
+                <div class="project-card reveal tilt">
+                    <h3>AR Project</h3>
+                    <div class="desc">
+                        Augmented Reality application developed using Unity and Vuforia Engine,
+                        featuring image target detection and interactive AR content.
+                    </div>
+                    <div class="meta">Tools: Unity, C#, Vuforia</div>
+                    <a href="https://github.com/JohnBrightson/AR-Project" target="_blank">View on GitHub →</a>
+                </div>
 
-        <p><strong>GitHub:</strong>
-            <a href="https://github.com/JohnBrightson" target="_blank" style="color:#3b82f6; text-decoration:none;">
-                github.com/JohnBrightson
-            </a>
-        </p>
+                <div class="project-card reveal tilt">
+                    <h3>Basic VR Simulation</h3>
+                    <div class="desc">
+                        Virtual Reality simulation focused on basic interaction and immersive environment setup.
+                    </div>
+                    <div class="meta">Tools: Unity, C#</div>
+                    <a href="https://github.com/JohnBrightson/Basic-VR-Simulation" target="_blank">View on GitHub →</a>
+                </div>
 
-        <p><strong>LinkedIn:</strong>
-            <a href="https://www.linkedin.com/in/john-brightson-195380314" target="_blank" style="color:#3b82f6; text-decoration:none;">
-                linkedin.com/in/john-brightson-195380314
-            </a>
-        </p>
+                <div class="project-card reveal tilt">
+                    <h3>Low-Poly 3D Models</h3>
+                    <div class="desc">
+                        Collection of optimized low-poly 3D models created for real-time games.
+                    </div>
+                    <div class="meta">Tools: Blender</div>
+                    <a href="https://github.com/JohnBrightson/Low-Poly-3D-models" target="_blank">View on GitHub →</a>
+                </div>
+
+                <!-- Hidden project -->
+                <div class="project-card reveal tilt hidden-project">
+                    <h3>2.5D Endless Runner</h3>
+                    <div class="desc">
+                        2.5D endless runner game with continuous level generation, player movement, and obstacle handling.
+                    </div>
+                    <div class="meta">Tools: Unity, C#</div>
+                    <a href="https://github.com/JohnBrightson/2.5D_Endless_Runner" target="_blank">View on GitHub →</a>
+                </div>
+            </div>
+
+            <div class="button-container">
+                <button id="projects-toggle">Show more</button>
+            </div>
+        </section>
+
+        <!-- CONTACT SECTION -->
+        <section id="contact-section" class="section-reveal">
+            <div id="contact" style="margin-top:0;">
+                <h2 style="font-size:24px; border-left:4px solid var(--accent); padding-left:12px;">Contact</h2>
+
+                <div style="background:var(--card); padding:25px; border-radius:14px; margin-top:25px; line-height:1.8;">
+                    <!-- Social buttons -->
+                    <div style="display: flex; justify-content: center; gap: 15px; margin-bottom: 30px; flex-wrap: wrap;">
+                        <a href="https://github.com/JohnBrightson" target="_blank" style="background: transparent; color: var(--accent); border: 2px solid var(--accent); padding: 8px 20px; border-radius: 30px; cursor: pointer; transition: all 0.8s ease; font-weight: 600; font-size: 14px; letter-spacing: 0.5px; text-decoration: none; display: inline-flex; align-items: center; gap: 8px;">
+                            <i class="fab fa-github" style="font-size: 16px;"></i> GitHub
+                        </a>
+                        
+                        <a href="https://www.linkedin.com/in/john-brightson-195380314" target="_blank" style="background: transparent; color: var(--accent); border: 2px solid var(--accent); padding: 8px 20px; border-radius: 30px; cursor: pointer; transition: all 0.8s ease; font-weight: 600; font-size: 14px; letter-spacing: 0.5px; text-decoration: none; display: inline-flex; align-items: center; gap: 8px;">
+                            <i class="fab fa-linkedin" style="font-size: 16px;"></i> LinkedIn
+                        </a>
+                        
+                        <a href="mailto:johnbrightson0@gmail.com" style="background: transparent; color: var(--accent); border: 2px solid var(--accent); padding: 8px 20px; border-radius: 30px; cursor: pointer; transition: all 0.8s ease; font-weight: 600; font-size: 14px; letter-spacing: 0.5px; text-decoration: none; display: inline-flex; align-items: center; gap: 8px;">
+                            <i class="fas fa-envelope" style="font-size: 16px;"></i> Mail
+                        </a>
+                    </div>
+
+                    <!-- Contact info -->
+                    <div style="display: flex; flex-direction: column; gap: 15px; align-items: center;">
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <span style="font-size: 20px;">📧</span>
+                            <span><strong>Email:</strong> <a href="mailto:johnbrightson0@gmail.com" style="color:var(--accent); text-decoration:none;">johnbrightson0@gmail.com</a></span>
+                        </div>
+                        
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <span style="font-size: 20px;">📱</span>
+                            <span><strong>Phone:</strong> <a href="tel:8903155922" style="color:var(--accent); text-decoration:none;">8903155922</a></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FOOTER -->
+            <div style="border-top:1px solid rgba(255,255,255,0.06); padding-top:25px; margin-top:60px; text-align:center; color:var(--muted);">
+                © 2026 John Brightson
+            </div>
+        </section>
     </div>
-</div>
 
-<!-- FOOTER -->
-<div style="border-top:1px solid #243044; padding-top:25px; margin-top:60px; text-align:center; color:#9ca3af;">
-    © 2026 John Brightson
-</div>
+    <script>
+        // ===== DROPDOWN TRANSITION FOR SECTIONS =====
+        // Triggers when sections come close to center of viewport
+        (function() {
+            const sections = document.querySelectorAll('.section-reveal');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    // Trigger when section is within 100px of the viewport center
+                    const threshold = 0.6; // 60% of section visible or when near center
+                    
+                    if (entry.isIntersecting) {
+                        // Add active class when section enters viewport
+                        entry.target.classList.add('active');
+                    } else {
+                        // Optional: remove class when section leaves (for re-animation)
+                        // Comment this out if you want sections to stay visible after first reveal
+                        // entry.target.classList.remove('active');
+                    }
+                });
+            }, {
+                threshold: 0.3, // Trigger when 30% of section is visible
+                rootMargin: '0px 0px -50px 0px' // Adjust trigger point
+            });
+            
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+        })();
 
-</div>
+        // Scroll reveal for individual elements (kept for compatibility)
+        (function(){
+            const obs = new IntersectionObserver((entries)=>{
+                entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('active'); });
+            },{threshold:0.3}); // Increased threshold for earlier trigger
+            document.querySelectorAll('.reveal').forEach(n=>obs.observe(n));
+        })();
+
+        // Tilt effect for project cards
+        (function(){
+            document.querySelectorAll('.project-card').forEach(card=>{
+                card.addEventListener('mousemove', (ev)=>{
+                    const r = card.getBoundingClientRect();
+                    const x = (ev.clientX - r.left - r.width/2) / r.width;
+                    const y = (ev.clientY - r.top - r.height/2) / r.height;
+                    card.style.transform = `rotateX(${(-y*6).toFixed(2)}deg) rotateY(${(x*6).toFixed(2)}deg) translateZ(0) scale(1.02)`;
+                });
+                card.addEventListener('mouseleave', ()=>{ card.style.transform=''; });
+            });
+        })();
+
+        // Show more toggle for projects
+        (function(){
+            const btn = document.getElementById('projects-toggle');
+            if(!btn) return;
+            btn.addEventListener('click', ()=>{
+                const hidden = document.querySelectorAll('.hidden-project');
+                const showing = hidden[0] && hidden[0].style.display !== 'none' && hidden[0].style.display !== '';
+                hidden.forEach(h=> h.style.display = showing ? 'none' : 'block');
+                btn.textContent = showing ? 'Show more' : 'Show less';
+            });
+            document.querySelectorAll('.hidden-project').forEach(h=> h.style.display='none');
+        })();
+
+        // Theme toggle
+        (function(){
+            const btn = document.getElementById('theme-toggle');
+            const root = document.documentElement;
+            const saved = localStorage.getItem('site-theme');
+            if(saved) root.dataset.theme = saved;
+            const icon = btn.querySelector('i');
+            icon.className = root.dataset.theme==='light' ? 'fas fa-moon' : 'fas fa-sun';
+            btn.addEventListener('click', ()=>{
+                const next = root.dataset.theme==='light' ? 'dark' : 'light';
+                root.dataset.theme = next;
+                localStorage.setItem('site-theme', next);
+                icon.className = next==='light' ? 'fas fa-moon' : 'fas fa-sun';
+            });
+            window.addEventListener('keydown',(e)=>{ if(e.key.toLowerCase()==='t'){ btn.click(); } });
+        })();
+
+        // Particle background
+        (function(){
+            const canvas = document.getElementById('bg-canvas');
+            if(!canvas) return;
+            const ctx = canvas.getContext('2d');
+            let w=0,h=0, particles=[];
+            
+            function resize(){ 
+                w=canvas.width=innerWidth; 
+                h=canvas.height=innerHeight; 
+            }
+            
+            window.addEventListener('resize', resize); 
+            resize();
+            
+            function rand(min,max){return Math.random()*(max-min)+min}
+            
+            function make(){ 
+                particles=[]; 
+                const count = Math.floor((w*h)/70000); 
+                for(let i=0;i<count;i++){ 
+                    particles.push({
+                        x:Math.random()*w,
+                        y:Math.random()*h,
+                        r:rand(0.6,1.8),
+                        vx:rand(-0.2,0.2),
+                        vy:rand(-0.15,0.15)
+                    });
+                } 
+            }
+            
+            make(); 
+            window.addEventListener('resize', make);
+            
+            let mx = w/2, my = h/2;
+            window.addEventListener('mousemove',(e)=>{ mx = e.clientX; my = e.clientY; });
+            
+            function draw(){ 
+                ctx.clearRect(0,0,w,h); 
+                const ox = (mx - w/2) * 0.02, oy = (my - h/2) * 0.02; 
+                
+                for(const p of particles){ 
+                    p.x+=p.vx + ox*0.02; 
+                    p.y+=p.vy + oy*0.02; 
+                    
+                    if(p.x< -10) p.x=w+10; 
+                    if(p.x>w+10) p.x=-10; 
+                    if(p.y< -10) p.y=h+10; 
+                    if(p.y>h+10) p.y=-10; 
+                    
+                    ctx.beginPath(); 
+                    ctx.fillStyle='rgba(255,255,255,0.06)'; 
+                    ctx.arc(
+                        p.x+Math.sin(p.x*0.01+Date.now()*0.0008)*1.2, 
+                        p.y+Math.cos(p.y*0.01+Date.now()*0.0009)*1.2, 
+                        p.r,0,Math.PI*2
+                    ); 
+                    ctx.fill(); 
+                }
+                requestAnimationFrame(draw);
+            }
+            draw();
+        })();
+    </script>
 </body>
 </html>
